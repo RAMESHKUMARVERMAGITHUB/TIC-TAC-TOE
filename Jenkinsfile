@@ -52,29 +52,30 @@ stage('OWASP FS SCAN') {
 stage("Docker Build & Push"){
             steps{
                 script{
-                   withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){   
-                       sh "docker build -t rameshkumarverma/devsecops_ad ."
-                       // sh "docker tag devsecops_ad kunalmaurya/devsecops_ad:latest "
-                       sh "docker push rameshkumarverma/devsecops_ad:latest "
+                   withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){ 
+                       sh "docker pull "
+                       // sh "docker build -t rameshkumarverma/devsecops_ad ."
+                       sh "docker tag /tic-tac-toe:latest rameshkumarverma/tic-tac-toe:latest "
+                       sh "docker push rameshkumarverma/tic-tac-toe:latest "
                     }
                 }
             }
         }
         stage("TRIVY"){
             steps{
-                sh "trivy image rameshkumarverma/devsecops_ad:latest > trivy.txt" 
+                sh "trivy image rameshkumarverma/tic-tac-toe:latest > trivy.txt" 
             }
         }
 // stage('Deploy to container'){
 //             steps{
-//                 sh 'docker run -d --name 2048 -p 3000:3000 rameshkumarverma/devsecops_ad:latest'
+//                 sh 'docker run -d --name 2048 -p 3000:3000 rameshkumarverma/tic-tac-toe:latest'
 //             }
 //         }
 stage('Deploy to kubernets'){
             steps{
                 script{
                     withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'k8s', namespace: '', restrictKubeConfigAccess: false, serverUrl: '') {
-                       sh 'kubectl apply -f deployment.yaml'
+                       sh 'kubectl apply -f deployment-service.yml'
                   }
                 }
             }
