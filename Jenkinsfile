@@ -53,9 +53,9 @@ stage("Docker Build & Push"){
             steps{
                 script{
                    withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){ 
-                       sh "docker pull "
+                       sh "docker pull sevenajay/tic-tac-toe:latest"
                        // sh "docker build -t rameshkumarverma/devsecops_ad ."
-                       sh "docker tag /tic-tac-toe:latest rameshkumarverma/tic-tac-toe:latest "
+                       sh "docker tag sevenajay/tic-tac-toe:latest rameshkumarverma/tic-tac-toe:latest "
                        sh "docker push rameshkumarverma/tic-tac-toe:latest "
                     }
                 }
